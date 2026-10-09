@@ -1,0 +1,233 @@
+/* ============================================================
+   Curriculum reading styles
+   ============================================================ */
+
+.lesson-body {
+  max-width: 760px;
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--text-1);
+}
+
+.lesson-h {
+  font-size: 21px;
+  margin: 34px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.015em;
+  scroll-margin-top: 80px;
+}
+.lesson-h:first-child { margin-top: 8px; }
+
+.lesson-p {
+  margin: 12px 0;
+}
+
+.lesson-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+.lesson-list li { margin: 6px 0; }
+.lesson-list li::marker { color: var(--accent); }
+
+/* key term box */
+.key-term {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin: 14px 0;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, rgba(76,195,255,0.09), rgba(76,195,255,0.02));
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.key-term-name {
+  font-weight: 750;
+  color: var(--accent);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.key-term-text { font-size: 14.5px; }
+
+/* equations */
+.eq-block {
+  margin: 18px 0;
+  padding: 14px 16px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  overflow-x: auto;
+}
+.eq-block figcaption { margin-top: 8px; }
+
+/* worked example */
+.worked-example {
+  margin: 18px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  overflow: hidden;
+}
+.worked-title {
+  padding: 11px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-0);
+  background: rgba(167, 139, 250, 0.10);
+  border-bottom: 1px solid var(--border);
+}
+.worked-steps {
+  margin: 0;
+  padding: 14px 18px 14px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 14.5px;
+}
+.worked-steps li::marker { color: var(--accent-2); font-weight: 700; }
+.worked-answer {
+  padding: 11px 16px;
+  background: var(--good-soft);
+  border-top: 1px solid rgba(52, 211, 153, 0.25);
+  font-size: 14px;
+}
+
+/* tables */
+.lesson-table-wrap { margin: 16px 0; overflow-x: auto; }
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.lesson-table th {
+  text-align: left;
+  padding: 9px 12px;
+  color: var(--text-2);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1.5px solid var(--border-strong);
+  white-space: nowrap;
+}
+.lesson-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.lesson-table tr:hover td { background: rgba(148, 163, 214, 0.04); }
+.lesson-table-wrap figcaption { margin-top: 7px; }
+
+/* molecule inset */
+.molecule-inset {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-1);
+}
+.molecule-inset-canvas {
+  height: 220px;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(76, 130, 255, 0.10), transparent 60%),
+    linear-gradient(180deg, #0d1322, #0a0e1a);
+}
+.molecule-inset figcaption {
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: var(--text-2);
+  border-top: 1px solid var(--border);
+  line-height: 1.55;
+}
+.molecule-inset figcaption b { color: var(--text-0); }
+
+/* sim embeds in lessons */
+.sim-embed { box-shadow: var(--shadow-1); }
+@media (max-width: 640px) {
+  .hide-narrow { display: none; }
+  .sim-embed > div:nth-child(2) { height: 560px !important; }
+}
+
+/* lesson page layout */
+.lesson-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 264px;
+  gap: 30px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 26px 28px 90px;
+}
+@media (max-width: 1000px) {
+  .lesson-layout { grid-template-columns: minmax(0, 1fr); }
+  .lesson-aside { display: none; }
+}
+
+.lesson-aside {
+  position: sticky;
+  top: calc(var(--topbar-h) + 18px);
+  align-self: start;
+  max-height: calc(100vh - var(--topbar-h) - 40px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+.lesson-objectives {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.lesson-objectives li { margin: 4px 0; }
+.lesson-objectives li::marker { color: var(--good); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-3);
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--text-2); }
+.breadcrumb a:hover { color: var(--accent); text-decoration: none; }
+.breadcrumb .sep { opacity: 0.5; }
+
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.lesson-nav a {
+  flex: 1;
+  padding: 13px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--panel);
+  transition: border-color 0.15s, transform 0.1s;
+  max-width: 48%;
+}
+.lesson-nav a:hover { border-color: var(--accent); text-decoration: none; transform: translateY(-1px); }
+.lesson-nav .nav-dir { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-nav .nav-title { font-size: 13.5px; color: var(--text-0); font-weight: 600; margin-top: 2px; }
+.lesson-nav .next { text-align: right; }
+
+/* concept page */
+.concept-hero {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 34px 28px 90px;
+}
+.concept-hero h1 { font-size: 32px; margin-bottom: 6px; }
+.concept-short { font-size: 17px; line-height: 1.65; color: var(--text-1); margin: 14px 0 22px; }
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
