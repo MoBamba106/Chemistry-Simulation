@@ -1,13 +1,13 @@
 /**
- * PeriodicTable — interactive table of elements (Z = 1–56).
+ * Shared interactive periodic-table grid.
  *
- * Color modes: category (default) or a property heatmap (electronegativity,
- * ionization energy, atomic radius proxy, valence electrons). Used by the
- * Periodic Trends simulation and as the element picker in the Molecule
- * Builder.
+ * The stand-alone reference page uses all 118 elements and the group/period
+ * headings; the periodic-trends simulation passes its AP-focused Z = 1–56
+ * data set and keeps the same cell renderer, colors, and selection behavior.
  */
 import * as React from "react";
-import { ELEMENTS, ElementCategory, ElementData, CATEGORY_COLORS } from "@/chem/elements";
+import { CATEGORY_COLORS, type ElementCategory, type ElementData } from "@/chem/elements";
+import { PERIODIC_ELEMENTS, type PeriodicElementData } from "@/chem/periodicTableData";
 
 export type PropertyMode = "category" | "en" | "ie" | "radius" | "valence" | "state";
 
@@ -15,12 +15,14 @@ export interface PeriodicTableProps {
   mode?: PropertyMode;
   selectedZ?: number | null;
   compareZ?: number[];
-  onSelect?: (el: ElementData) => void;
+  onSelect?: (el: PeriodicElementData) => void;
   compact?: boolean;
   highlightZ?: number[];
+  elements?: PeriodicElementData[];
+  showHeaders?: boolean;
 }
 
-function propertyValue(el: ElementData, mode: PropertyMode): number | null {
+function propertyValue(el: PeriodicElementData, mode: PropertyMode): number | null {
   switch (mode) {
     case "en": return el.en;
     case "ie": return el.ionizationEnergy;
@@ -31,14 +33,13 @@ function propertyValue(el: ElementData, mode: PropertyMode): number | null {
 }
 
 function heatColor(t: number): string {
-  // 0 → deep blue, 1 → hot gold/red
+  // A low-contrast teal → straw → rose scale that remains readable on paper.
   const stops: Array<[number, number, number]> = [
-    [30, 58, 110],
-    [46, 121, 175],
-    [76, 195, 255],
-    [120, 220, 170],
-    [250, 205, 110],
-    [255, 130, 90],
+    [203, 225, 217],
+    [219, 226, 203],
+    [237, 222, 187],
+    [226, 191, 165],
+    [205, 158, 151],
   ];
   const x = Math.max(0, Math.min(1, t)) * (stops.length - 1);
   const i = Math.min(Math.floor(x), stops.length - 2);
@@ -47,11 +48,39 @@ function heatColor(t: number): string {
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-const STATE_COLOR: Record<string, string> = {
-  solid: "#9aa4b2",
-  liquid: "#4cc3ff",
-  gas: "#34d399",
+const STATE_COLOR: Record<PeriodicElementData["state"], string> = {
+  solid: "#d6e2dc",
+  liquid: "#d5e0ec",
+  gas: "#e8d8e2",
 };
+
+const MODE_LABEL: Record<PropertyMode, string> = {
+  category: "Element family",
+  en: "Pauling electronegativity",
+  ie: "First ionization energy (kJ/mol)",
+  radius: "Covalent radius (Å)",
+  valence: "Valence electrons",
+  state: "State at 25 °C",
+};
+
+function displayNumber(value: number | null, mode: PropertyMode): string {
+  if (value === null) return "—";
+  if (mode === "radius") return value.toFixed(2).replace(/0$/, "");
+  if (mode === "en") return value.toFixed(2).replace(/0$/, "");
+  if (mode === "ie") return Math.round(value).toString();
+  return String(value);
+}
+
+function coreRecord(element: ElementData): PeriodicElementData {
+  const digits = element.mass < 10 ? 5 : 6;
+  return {
+    ...element,
+    massLabel: Number(element.mass.toPrecision(digits)).toString(),
+    tableRow: element.period,
+    tableColumn: element.group,
+    confidence: "reference",
+  };
+}
 
 export function PeriodicTable({
   mode = "category",
@@ -60,97 +89,146 @@ export function PeriodicTable({
   onSelect,
   compact = false,
   highlightZ = [],
+  elements = PERIODIC_ELEMENTS,
+  showHeaders = false,
 }: PeriodicTableProps) {
-  // property ranges for heatmap
+  // Preserve compatibility for callers passing the chemistry engine's
+  // original (richer, but AP-limited) ElementData objects.
+  const records = React.useMemo(
+    () => elements.map((element) => element.massLabel ? element : coreRecord(element as unknown as ElementData)),
+    [elements]
+  );
   const ranges = React.useMemo(() => {
-    const vals = ELEMENTS.map((el) => propertyValue(el, mode)).filter(
+    const vals = records.map((el) => propertyValue(el, mode)).filter(
       (v): v is number => v !== null
     );
     return vals.length ? { min: Math.min(...vals), max: Math.max(...vals) } : { min: 0, max: 1 };
-  }, [mode]);
+  }, [records, mode]);
 
-  const cellSize = compact ? 34 : 44;
+  const cellSize = compact ? 34 : 54;
+  const gridStyle: React.CSSProperties = compact
+    ? {
+        gridTemplateColumns: `repeat(18, ${cellSize}px)`,
+        gridAutoRows: `${cellSize * 1.1}px`,
+        gap: 3,
+        justifyContent: "center",
+      }
+    : showHeaders
+      ? {
+          gridTemplateColumns: "34px repeat(18, minmax(48px, 1fr))",
+          gridTemplateRows: "24px repeat(9, minmax(54px, auto))",
+          gap: 4,
+          minWidth: 1110,
+        }
+      : {
+          gridTemplateColumns: `repeat(18, ${cellSize}px)`,
+          gridAutoRows: `${cellSize * 1.12}px`,
+          gap: 4,
+          justifyContent: "center",
+        };
+
+  const tile = (el: PeriodicElementData) => {
+    const value = propertyValue(el, mode);
+    const baseColor = mode === "category"
+      ? CATEGORY_COLORS[el.category as ElementCategory] ?? "#dfd1bc"
+      : mode === "state"
+        ? STATE_COLOR[el.state]
+        : value === null
+          ? "#e2d6c3"
+          : heatColor((value - ranges.min) / (ranges.max - ranges.min || 1));
+    const isSelected = selectedZ === el.z;
+    const isCompare = compareZ.includes(el.z);
+    const isHighlight = highlightZ.includes(el.z);
+    const showProperty = !compact && mode !== "category" && mode !== "state";
+    const tileClass = [
+      "ptable-cell",
+      compact ? "ptable-cell-compact" : "",
+      isSelected ? "is-selected" : "",
+      isCompare ? "is-compare" : "",
+      isHighlight ? "is-highlighted" : "",
+    ].filter(Boolean).join(" ");
+
+    return (
+      <button
+        key={el.z}
+        type="button"
+        className={tileClass}
+        style={{
+          gridColumn: (showHeaders ? el.tableColumn + 1 : el.tableColumn),
+          gridRow: (showHeaders ? el.tableRow + 1 : el.tableRow),
+          ["--element-fill" as string]: baseColor,
+        }}
+        onClick={() => onSelect?.(el)}
+        disabled={!onSelect}
+        title={`${el.name} · atomic number ${el.z} · ${el.category}`}
+        aria-label={`${el.name}, atomic number ${el.z}, ${el.massLabel} u`}
+        aria-pressed={isSelected || isCompare}
+      >
+        <span className="ptable-cell-number">{el.z}</span>
+        <span className="ptable-cell-symbol">{el.symbol}</span>
+        {!compact && (
+          <span className="ptable-cell-meta">
+            {showProperty
+              ? displayNumber(value, mode)
+              : mode === "category"
+                ? el.massLabel
+                : el.state}
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  const hasFBlock = showHeaders && records.some((element) => element.tableRow > 7);
 
   return (
     <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(18, ${cellSize}px)`,
-        gridAutoRows: `${cellSize * (compact ? 1.05 : 1.12)}px`,
-        gap: compact ? 2 : 3,
-        justifyContent: "center",
-      }}
+      className={`ptable-grid${compact ? " is-compact" : ""}${showHeaders ? " has-headers" : ""}`}
+      style={gridStyle}
       role="group"
       aria-label="Periodic table of elements"
     >
-      {ELEMENTS.map((el) => {
-        const pv = propertyValue(el, mode);
-        let bg: string;
-        if (mode === "category") bg = CATEGORY_COLORS[el.category as ElementCategory] ?? "#888";
-        else if (mode === "state") bg = STATE_COLOR[el.state];
-        else if (pv === null) bg = "#2a3348";
-        else bg = heatColor((pv - ranges.min) / (ranges.max - ranges.min || 1));
+      {showHeaders && (
+        <>
+          <span className="ptable-axis-label" style={{ gridColumn: 1, gridRow: 1 }}>Group</span>
+          {Array.from({ length: 18 }, (_, index) => (
+            <span className="ptable-group-number" key={`g${index + 1}`} style={{ gridColumn: index + 2, gridRow: 1 }}>
+              {index + 1}
+            </span>
+          ))}
+          {Array.from({ length: 7 }, (_, index) => (
+            <span className="ptable-period-number" key={`p${index + 1}`} style={{ gridColumn: 1, gridRow: index + 2 }}>
+              {index + 1}
+            </span>
+          ))}
+          {hasFBlock && (
+            <>
+              <span className="ptable-series-label" style={{ gridColumn: "2 / 4", gridRow: 9 }}>Lanthanides</span>
+              <span className="ptable-series-label" style={{ gridColumn: "2 / 4", gridRow: 10 }}>Actinides</span>
+            </>
+          )}
+        </>
+      )}
 
-        const isSelected = selectedZ === el.z;
-        const isCompare = compareZ.includes(el.z);
-        const isHighlight = highlightZ.includes(el.z);
-        const dim = mode !== "category" && pv === null;
+      {records.map(tile)}
 
+      {showHeaders && hasFBlock && [
+        { z: 57, row: 7, label: "57–71", sub: "Lanthanides" },
+        { z: 89, row: 8, label: "89–103", sub: "Actinides" },
+      ].map((marker) => {
+        const first = records.find((element) => element.z === marker.z);
         return (
           <button
-            key={el.z}
-            onClick={() => onSelect?.(el)}
-            title={`${el.name} — click for details`}
-            aria-label={`${el.name}, atomic number ${el.z}`}
-            style={{
-              gridColumn: el.group,
-              gridRow: el.period,
-              position: "relative",
-              border: isSelected
-                ? "2px solid #fff"
-                : isCompare
-                  ? "2px solid var(--accent)"
-                  : isHighlight
-                    ? "2px solid var(--warn)"
-                    : "1px solid rgba(0,0,0,0.35)",
-              borderRadius: compact ? 5 : 7,
-              background: `linear-gradient(160deg, ${bg}, ${shade(bg, -18)})`,
-              cursor: onSelect ? "pointer" : "default",
-              opacity: dim ? 0.32 : 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 0,
-              transition: "transform 0.1s, box-shadow 0.12s",
-              boxShadow: isSelected ? "0 0 12px rgba(255,255,255,0.35)" : "none",
-              color: readableOn(bg),
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "scale(1.12)";
-              (e.currentTarget as HTMLElement).style.zIndex = "5";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-              (e.currentTarget as HTMLElement).style.zIndex = "";
-            }}
+            type="button"
+            key={`marker-${marker.z}`}
+            className="ptable-series-marker"
+            style={{ gridColumn: 4, gridRow: marker.row }}
+            onClick={() => first && onSelect?.(first)}
+            disabled={!onSelect}
+            title={`Jump to ${marker.sub.toLowerCase()}`}
           >
-            <span style={{ fontSize: compact ? 6.5 : 8, opacity: 0.85, position: "absolute", top: 2, left: 4 }}>
-              {el.z}
-            </span>
-            <span style={{ fontSize: compact ? 12 : 15, fontWeight: 800, lineHeight: 1 }}>
-              {el.symbol}
-            </span>
-            {!compact && (
-              <span style={{ fontSize: 7.5, opacity: 0.8, maxWidth: "95%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {el.name}
-              </span>
-            )}
-            {!compact && mode !== "category" && pv !== null && (
-              <span style={{ fontSize: 7.5, fontWeight: 700, opacity: 0.95 }}>
-                {pv < 10 ? pv.toFixed(2).replace(/0$/, "") : Math.round(pv)}
-              </span>
-            )}
+            <b>{marker.label}</b>
+            <span>f-block ↓</span>
           </button>
         );
       })}
@@ -158,27 +236,4 @@ export function PeriodicTable({
   );
 }
 
-function shade(color: string, percent: number): string {
-  const m = color.match(/\d+/g);
-  if (!m) return color;
-  const [r, g, b] = m.map(Number);
-  const f = (v: number) => Math.max(0, Math.min(255, Math.round(v * (1 + percent / 100))));
-  return `rgb(${f(r)},${f(g)},${f(b)})`;
-}
-
-function readableOn(color: string): string {
-  const m = color.match(/\d+/g);
-  if (!m) return "#fff";
-  const [r, g, b] = m.map(Number);
-  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  return lum > 0.55 ? "#141a28" : "#f5f8ff";
-}
-
-export const PROPERTY_MODE_LABELS: Record<PropertyMode, string> = {
-  category: "Category",
-  en: "Electronegativity",
-  ie: "1st Ionization Energy",
-  radius: "Covalent Radius",
-  valence: "Valence Electrons",
-  state: "State (25 °C)",
-};
+export const PROPERTY_MODE_LABELS: Record<PropertyMode, string> = MODE_LABEL;

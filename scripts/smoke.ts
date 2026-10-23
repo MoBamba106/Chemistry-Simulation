@@ -15,6 +15,7 @@ import { SIMS, getSim } from "@/sims/registry";
 import { MOLECULES, MOLECULE_MAP, moleculeToSpecies } from "@/chem/molecules";
 import { analyzeSpecies } from "@/chem/lewis";
 import { getElement, hasElement } from "@/chem/elements";
+import { PERIODIC_ELEMENTS } from "@/chem/periodicTableData";
 
 let failures = 0;
 function check(ok: boolean, msg: string) {
@@ -29,6 +30,13 @@ for (const [id] of TOPIC_INDEX) {
   check(!!getLesson(id), `topic ${id} has no lesson`);
 }
 console.log(`lessons: ${Object.keys(LESSONS).length}, topics: ${TOPIC_INDEX.size}`);
+
+/* ---------- 1b. full periodic-table data ---------- */
+check(PERIODIC_ELEMENTS.length === 118, `periodic table has ${PERIODIC_ELEMENTS.length} elements, expected 118`);
+check(new Set(PERIODIC_ELEMENTS.map((element) => element.symbol)).size === 118, "periodic table symbols are not unique");
+for (let index = 0; index < PERIODIC_ELEMENTS.length; index++) {
+  check(PERIODIC_ELEMENTS[index].z === index + 1, `periodic-table entry ${index + 1} has Z=${PERIODIC_ELEMENTS[index].z}`);
+}
 
 /* ---------- 2. lesson references ---------- */
 for (const [id, lesson] of Object.entries(LESSONS)) {
@@ -105,6 +113,9 @@ const queries: Array<[string, string]> = [
   ["build molecule", "molecule-builder"],
   ["ionic bonding", "ionic-bonding"],
   ["periodic trends", "periodic-explorer"],
+  ["118 element periodic table", "periodic-table"],
+  ["bond length diagram", "bond-length-lab"],
+  ["morse potential bond", "bond-length-lab"],
   ["gibbs free energy", "gibbs-free-energy"],
   ["rate law", "rate-law"],
 ];

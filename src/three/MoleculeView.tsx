@@ -91,7 +91,7 @@ export function MoleculeView({
             pa={pa}
             pb={pb}
             order={bond.order}
-            color={selected ? "#4cc3ff" : "#9fb0d0"}
+            color={selected ? "#32968f" : "#9a8775"}
             interactive={interactive && !!onSelectBond}
             onClick={() => onSelectBond?.(selected ? null : bond.id)}
           />
@@ -133,9 +133,9 @@ export function MoleculeView({
                 roughness={0.32}
                 metalness={0.08}
                 emissive={
-                  isSelected ? "#4cc3ff" : isHighlighted ? "#fbbf24" : isHovered ? "#2a3b5e" : "#000000"
+                  isSelected ? "#32968f" : isHighlighted ? "#b18445" : isHovered ? "#7b6758" : "#000000"
                 }
-                emissiveIntensity={isSelected ? 0.55 : isHighlighted ? 0.5 : isHovered ? 0.5 : 0}
+                emissiveIntensity={isSelected ? 0.35 : isHighlighted ? 0.35 : isHovered ? 0.28 : 0}
                 transparent={isDimmed}
                 opacity={isDimmed ? 0.28 : 1}
               />
@@ -147,8 +147,8 @@ export function MoleculeView({
                     fontFamily: "var(--font-sans)",
                     fontWeight: 700,
                     fontSize: 13,
-                    color: labelColorFor(info.element.color),
-                    textShadow: "0 1px 3px rgba(0,0,0,0.9)",
+                    color: "#4e3f4f",
+                    textShadow: "0 0 4px rgba(244,230,210,0.95), 0 1px 1px rgba(244,230,210,0.95)",
                     whiteSpace: "nowrap",
                     userSelect: "none",
                     transform: `translateY(${-(r * 26 + 6)}px)`,
@@ -163,15 +163,15 @@ export function MoleculeView({
               <Html center distanceFactor={9} style={{ pointerEvents: "none" }}>
                 <div
                   style={{
-                    background: "rgba(10,14,23,0.92)",
-                    border: "1px solid rgba(148,163,214,0.25)",
-                    borderRadius: 8,
+                    background: "rgba(244,230,210,0.97)",
+                    border: "1px solid #c4a984",
+                    borderRadius: 6,
                     padding: "5px 9px",
                     fontSize: 11.5,
-                    color: "#e6edff",
+                    color: "#4e3f4f",
                     whiteSpace: "nowrap",
                     transform: `translateY(${r * 30 + 22}px)`,
-                    boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+                    boxShadow: "0 4px 12px rgba(66,47,34,0.16)",
                   }}
                 >
                   <b>{info.element.name}</b>

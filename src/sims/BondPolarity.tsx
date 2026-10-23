@@ -388,7 +388,7 @@ function AtomBall({
       </mesh>
       <Html center distanceFactor={9} style={{ pointerEvents: "none" }}>
         <div style={{ transform: `translateY(${-(radius * 40 + 14)}px)`, textAlign: "center" }}>
-          <div style={{ color: "#fff", fontWeight: 800, fontSize: 14, textShadow: "0 1px 4px #000" }}>{label}</div>
+          <div style={{ color: "#4e3f4f", fontWeight: 800, fontSize: 14, textShadow: "0 0 4px rgba(244,230,210,0.95)" }}>{label}</div>
           {delta && (
             <div style={{ color: delta.startsWith("δ−") || delta.includes("full") ? "#9dc4ff" : "#ff9d9d", fontWeight: 800, fontSize: 13, textShadow: "0 1px 4px #000" }}>
               {delta === "+full" ? "ion" : delta}
@@ -507,37 +507,37 @@ function PECurve({
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "100%" }} role="img" aria-label="Potential energy curve">
       {/* zero energy line */}
-      <line x1={padL} y1={sy(0)} x2={W - padR} y2={sy(0)} stroke="#3a4a6e" strokeDasharray="5 5" strokeWidth={1.2} />
-      <text x={padL + 6} y={sy(0) - 6} fill="#8b98b8" fontSize={12}>PE = 0 (separated atoms)</text>
+      <line x1={padL} y1={sy(0)} x2={W - padR} y2={sy(0)} stroke="var(--line)" strokeDasharray="5 5" strokeWidth={1.2} />
+      <text x={padL + 6} y={sy(0) - 6} fill="var(--ink-faint)" fontSize={12}>PE = 0 (separated atoms)</text>
       {/* axes */}
-      <line x1={padL} y1={padT} x2={padL} y2={H - padB} stroke="#3a4a6e" strokeWidth={1.5} />
-      <line x1={padL} y1={H - padB} x2={W - padR} y2={H - padB} stroke="#3a4a6e" strokeWidth={1.5} />
-      <text x={W / 2} y={H - 10} fill="#c3cde4" fontSize={13} textAnchor="middle">internuclear distance r (Å)</text>
-      <text x={16} y={H / 2} fill="#c3cde4" fontSize={13} textAnchor="middle" transform={`rotate(-90 16 ${H / 2})`}>potential energy</text>
+      <line x1={padL} y1={padT} x2={padL} y2={H - padB} stroke="var(--line)" strokeWidth={1.5} />
+      <line x1={padL} y1={H - padB} x2={W - padR} y2={H - padB} stroke="var(--line)" strokeWidth={1.5} />
+      <text x={W / 2} y={H - 10} fill="var(--ink-soft)" fontSize={13} textAnchor="middle">internuclear distance r (Å)</text>
+      <text x={16} y={H / 2} fill="var(--ink-soft)" fontSize={13} textAnchor="middle" transform={`rotate(-90 16 ${H / 2})`}>potential energy</text>
       {/* curve */}
       <path d={path} fill="none" stroke="url(#grad)" strokeWidth={3} strokeLinecap="round" />
       <defs>
         <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#f87171" />
-          <stop offset="45%" stopColor="#4cc3ff" />
-          <stop offset="100%" stopColor="#a78bfa" />
+          <stop offset="0%" stopColor="#ad6267" />
+          <stop offset="45%" stopColor="#32968f" />
+          <stop offset="100%" stopColor="#8d7587" />
         </linearGradient>
       </defs>
       {/* minimum marker */}
-      <line x1={sx(rEq)} y1={sy(-De)} x2={sx(rEq)} y2={H - padB} stroke="#34d399" strokeDasharray="4 4" strokeWidth={1.2} />
-      <circle cx={sx(rEq)} cy={sy(-De)} r={5.5} fill="#34d399" />
-      <text x={sx(rEq) + 9} y={sy(-De) + 18} fill="#34d399" fontSize={12.5} fontWeight={700}>
+      <line x1={sx(rEq)} y1={sy(-De)} x2={sx(rEq)} y2={H - padB} stroke="#4e9e78" strokeDasharray="4 4" strokeWidth={1.2} />
+      <circle cx={sx(rEq)} cy={sy(-De)} r={5.5} fill="#4e9e78" />
+      <text x={sx(rEq) + 9} y={sy(-De) + 18} fill="#4e9e78" fontSize={12.5} fontWeight={700}>
         bond length {rEq.toFixed(2)} Å · bond energy {De.toFixed(0)} kJ/mol
       </text>
       {/* current position */}
-      <circle cx={cx} cy={cy} r={8} fill="#fff" opacity={0.16} />
-      <circle cx={cx} cy={cy} r={4.5} fill="#fff" />
-      <text x={cx} y={cy - 14} fill="#fff" fontSize={12} textAnchor="middle" fontWeight={700}>
+      <circle cx={cx} cy={cy} r={8} fill="#8d7587" opacity={0.18} />
+      <circle cx={cx} cy={cy} r={4.5} fill="#715c71" />
+      <text x={cx} y={cy - 14} fill="#4e3f4f" fontSize={12} textAnchor="middle" fontWeight={700}>
         {a}–{b} here
       </text>
       {/* repulsion / attraction annotations */}
-      <text x={sx(rMin) + 8} y={padT + 34} fill="#f87171" fontSize={12} fontWeight={600}>r &lt; r₀: repulsion dominates</text>
-      <text x={sx(rMax) - 14} y={padT + 34} fill="#a78bfa" fontSize={12} fontWeight={600} textAnchor="end">r ≫ r₀: atoms separate (bond breaks)</text>
+      <text x={sx(rMin) + 8} y={padT + 34} fill="#ad6267" fontSize={12} fontWeight={600}>r &lt; r₀: repulsion dominates</text>
+      <text x={sx(rMax) - 14} y={padT + 34} fill="#715c71" fontSize={12} fontWeight={600} textAnchor="end">r ≫ r₀: atoms separate (bond breaks)</text>
     </svg>
   );
 }

@@ -34,7 +34,7 @@ export default function AppShell({
         <Link to="/" className="topbar-brand" aria-label="ChemLab home">
           <span className="brand-orb" aria-hidden>⚗️</span>
           <span>
-            Chem<span style={{ background: "var(--grad-accent)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Lab</span>
+            Chem<span style={{ color: "var(--accent)" }}>Lab</span>
           </span>
         </Link>
 
@@ -44,6 +44,9 @@ export default function AppShell({
           </NavLink>
           <NavLink to="/curriculum" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>
             📚 <span>Curriculum</span>
+          </NavLink>
+          <NavLink to="/periodic-table" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>
+            ⚛️ <span>Periodic table</span>
           </NavLink>
         </nav>
 

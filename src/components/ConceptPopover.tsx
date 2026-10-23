@@ -78,11 +78,11 @@ export function ConceptPopoverLink({
           cursor: "pointer",
           color: "var(--accent)",
           font: "inherit",
-          borderBottom: "1px dotted rgba(76,195,255,0.55)",
+          borderBottom: "1px dotted rgba(73,189,180,0.62)",
           transition: "background 0.12s",
           borderRadius: 2,
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(76,195,255,0.10)")}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(73,189,180,0.12)")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
       >
         {text}
@@ -139,7 +139,7 @@ export function ConceptPopover({
         zIndex: 200,
         background: "var(--bg-2)",
         border: "1px solid var(--border-strong)",
-        borderRadius: 14,
+        borderRadius: 8,
         boxShadow: "var(--shadow-3)",
         padding: "14px 16px",
       }}
@@ -222,7 +222,7 @@ export function MoleculePreview({ id, height = 130 }: { id: string; height?: num
       style={{
         marginTop: 10, borderRadius: 10, overflow: "hidden",
         border: "1px solid var(--border)", height, position: "relative",
-        background: "radial-gradient(ellipse at 50% 0%, rgba(76,130,255,0.10), transparent 70%), #0c1120",
+        background: "radial-gradient(ellipse at 50% 0%, rgba(73,189,180,0.12), transparent 70%), #f0e2ce",
       }}
     >
       <Suspense fallback={null}>

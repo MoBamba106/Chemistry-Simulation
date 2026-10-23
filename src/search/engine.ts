@@ -1,6 +1,6 @@
 /**
  * Search engine — one small, fast, dependency-free index over simulations,
- * units, topics, lessons, and concepts. Built once on first use from the
+ * reference pages, units, topics, lessons, and concepts. Built once on first use from the
  * same data modules that drive the UI (single source of truth), scored by
  * token matching with field weights.
  */
@@ -11,7 +11,7 @@ import { getAllLessons, getLesson } from "@/curriculum/lessons";
 import { plainText } from "@/curriculum/LessonText";
 import type { Lesson, Block } from "@/curriculum/lessonTypes";
 
-export type ResultKind = "sim" | "lesson" | "topic" | "unit" | "concept";
+export type ResultKind = "sim" | "lesson" | "topic" | "unit" | "concept" | "page";
 
 export interface SearchDoc {
   kind: ResultKind;
@@ -97,6 +97,21 @@ export function buildIndex(): SearchDoc[] {
       ],
     });
   }
+
+  // Standalone reference pages
+  docs.push({
+    kind: "page",
+    id: "periodic-table",
+    title: "Interactive Periodic Table",
+    subtitle: "Explore and compare properties across all 118 elements.",
+    breadcrumb: ["Reference", "118 elements"],
+    haystacks: [
+      { text: "periodic table element table", weight: 12 },
+      { text: "118 elements atomic numbers symbols families", weight: 8 },
+      { text: "electronegativity ionization energy covalent radius valence state", weight: 5 },
+      { text: "compare search element data configuration", weight: 3 },
+    ],
+  });
 
   // Units & topics
   for (const unit of UNITS) {

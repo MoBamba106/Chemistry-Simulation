@@ -61,7 +61,7 @@ export function LewisDiagram({
   if (species.atoms.length === 0) {
     return (
       <svg width={width} height={height} style={style}>
-        <text x={width / 2} y={height / 2} textAnchor="middle" fill="#5d6a8a" fontSize={13}>
+        <text x={width / 2} y={height / 2} textAnchor="middle" fill="var(--ink-faint)" fontSize={13}>
           Add atoms to see the Lewis structure
         </text>
       </svg>
@@ -95,7 +95,7 @@ export function LewisDiagram({
         const px = -uy, py = ux; // perpendicular
         const gap = Math.min(4.5, scale * 0.06);
         const selected = selectedAtomId === bond.a || selectedAtomId === bond.b;
-        const color = selected ? "#4cc3ff" : "#aebdda";
+        const color = selected ? "var(--accent-paper-dark)" : "#9a8775";
         const lines: Array<[number, number]> =
           bond.order === 1 ? [[0, 0]] :
           bond.order === 2 ? [[gap / 2, -gap / 2]] :
@@ -140,8 +140,8 @@ export function LewisDiagram({
           const dim = highlightSet.size > 0 && !highlightSet.has(lp.atomId);
           return (
             <g key={i} opacity={dim ? 0.35 : 1}>
-              <circle cx={bx + perpX * spread} cy={by + perpY * spread} r={2.6} fill="#8ec9ff" />
-              <circle cx={bx - perpX * spread} cy={by - perpY * spread} r={2.6} fill="#8ec9ff" />
+              <circle cx={bx + perpX * spread} cy={by + perpY * spread} r={2.6} fill="var(--accent-paper-dark)" />
+              <circle cx={bx - perpX * spread} cy={by - perpY * spread} r={2.6} fill="var(--accent-paper-dark)" />
             </g>
           );
         })}
@@ -161,7 +161,7 @@ export function LewisDiagram({
                 cx={tx(pos.x) + Math.cos(angle) * (atomR + scale * 0.24)}
                 cy={ty(pos.y) - Math.sin(angle) * (atomR + scale * 0.24)}
                 r={2.6}
-                fill="#ffc94d"
+                fill="#b18445"
               />
             );
           })}
@@ -187,8 +187,8 @@ export function LewisDiagram({
                 cx={x}
                 cy={y}
                 r={atomR + 7}
-                fill={highlighted ? "rgba(251,191,36,0.14)" : "rgba(76,195,255,0.14)"}
-                stroke={highlighted ? "#fbbf24" : "#4cc3ff"}
+                fill={highlighted ? "rgba(177,132,69,0.14)" : "rgba(73,189,180,0.14)"}
+                stroke={highlighted ? "#a87935" : "var(--accent-paper-dark)"}
                 strokeWidth={1.4}
               />
             )}
@@ -200,8 +200,8 @@ export function LewisDiagram({
               dominantBaseline="central"
               fontSize={Math.min(20, scale * 0.3)}
               fontWeight={750}
-              fill={selected ? "#4cc3ff" : highlighted ? "#fbbf24" : "#eef3ff"}
-              stroke="#0c1120"
+              fill={selected ? "var(--accent-paper-dark)" : highlighted ? "#a87935" : "var(--ink)"}
+              stroke="var(--paper-raised)"
               strokeWidth={4}
               paintOrder="stroke"
               style={{ fontFamily: "var(--font-sans)" }}
@@ -215,7 +215,7 @@ export function LewisDiagram({
                 textAnchor="middle"
                 fontSize={Math.min(13, scale * 0.19)}
                 fontWeight={700}
-                fill={info.formalCharge > 0 ? "#ff9d9d" : "#9dc4ff"}
+                fill={info.formalCharge > 0 ? "#ad6267" : "#527a9d"}
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 {info.formalCharge > 0 ? `${info.formalCharge === 1 ? "" : info.formalCharge}+` : `${info.formalCharge === -1 ? "" : Math.abs(info.formalCharge)}−`}
@@ -243,7 +243,7 @@ function BracketBox({
   const maxY = Math.max(...positions.map((p) => p.y)) + pad;
   const r = 10;
   const bl = 16; // bracket arm length
-  const stroke = "#64749b";
+  const stroke = "#9a8775";
   const w = 1.6;
   return (
     <g>
@@ -264,7 +264,7 @@ function BracketBox({
         y={minY + 4}
         fontSize={17}
         fontWeight={750}
-        fill="#c4b0ff"
+        fill="var(--accent-2)"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {charge}

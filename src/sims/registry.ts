@@ -240,6 +240,31 @@ export const SIMS: SimMeta[] = [
     load: () => import("./BondPolarity"),
   },
   {
+    id: "bond-length-lab",
+    name: "Molecular Bond Length Explorer",
+    tagline: "Add molecules, annotate every bond in Å, and explore its energy well",
+    description:
+      "Search and compare up to four molecules from the built-in structure library. Every bond is labeled with a reference or covalent-radius estimate; click a bond to adjust internuclear distance on a Morse potential-energy curve. Resonance structures can be averaged to show why equivalent bonds become the same intermediate length. Use the Molecule Builder for a custom connectivity graph.",
+    category: "bonding",
+    keywords: [
+      "bond length", "bond-length diagram", "bond length diagram", "potential energy curve", "potential-energy diagram",
+      "internuclear distance", "bond order", "bond energy", "morse potential", "molecule bond lengths",
+      "compare molecules", "resonance bond length", "bond length vs bond order", "angstrom", "pm",
+    ],
+    icon: "📏",
+    units: [2],
+    concepts: ["bond-length", "bond-energy", "potential-energy-curve", "resonance", "covalent-bond"],
+    accent: "#49bdb4",
+    presets: [
+      { id: "c2h4", label: "Ethene · C=C and C–H", description: "Compare double and single bonds in one molecule." },
+      { id: "n2", label: "Nitrogen · N≡N", description: "A short, exceptionally strong triple bond." },
+      { id: "co2", label: "Carbon dioxide · C=O", description: "Two equivalent double bonds." },
+      { id: "h2o", label: "Water · O–H", description: "Reference O–H bond length and curve." },
+      { id: "co3", label: "Carbonate · resonance", description: "See the average length of three equivalent C–O bonds." },
+    ],
+    load: () => import("./BondLengthLab"),
+  },
+  {
     id: "molecular-polarity",
     name: "Molecular Polarity",
     tagline: "Bond dipoles as vectors — see when they cancel and when they don't",

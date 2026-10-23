@@ -18,7 +18,8 @@ export type ElementCategory =
   | "nonmetal"
   | "halogen"
   | "noble gas"
-  | "lanthanide";
+  | "lanthanide"
+  | "actinide";
 
 export interface ElementData {
   z: number;
@@ -159,15 +160,17 @@ function capitalize(s: string): string {
 
 /** CPK-style colors keyed by category, with per-element overrides above. */
 export const CATEGORY_COLORS: Record<ElementCategory, string> = {
-  "alkali metal": "#ab5cf2",
-  "alkaline earth metal": "#5ee06a",
-  "transition metal": "#8fa8c8",
-  "post-transition metal": "#b08f8f",
-  metalloid: "#d1a85e",
-  nonmetal: "#59c2ff",
-  halogen: "#7ce87c",
-  "noble gas": "#7dd8ff",
-  lanthanide: "#e07bd0",
+  // Muted paper-friendly fills used by the periodic-table views.
+  "alkali metal": "#ead9b9",
+  "alkaline earth metal": "#dce3c9",
+  "transition metal": "#d6e2dc",
+  "post-transition metal": "#efd8ca",
+  metalloid: "#e4d8bd",
+  nonmetal: "#d5e5df",
+  halogen: "#edd5d2",
+  "noble gas": "#d8e1eb",
+  lanthanide: "#e8d8e2",
+  actinide: "#ded8e8",
 };
 
 /** Whether an element behaves as a metal in bonding contexts. */
@@ -177,7 +180,8 @@ export function isMetal(el: ElementData): boolean {
     el.category === "alkaline earth metal" ||
     el.category === "transition metal" ||
     el.category === "post-transition metal" ||
-    el.category === "lanthanide"
+    el.category === "lanthanide" ||
+    el.category === "actinide"
   );
 }
 

@@ -16,6 +16,8 @@ import CurriculumHome from "@/pages/CurriculumHome";
 import LessonPage from "@/pages/LessonPage";
 import ConceptPage from "@/pages/ConceptPage";
 import NotFound from "@/pages/NotFound";
+import PeriodicTablePage from "@/pages/PeriodicTablePage";
+import BondLengthLab from "@/sims/BondLengthLab";
 import { TOPIC_INDEX } from "@/curriculum/units";
 import { CONCEPTS } from "@/curriculum/concepts";
 import { SIMS } from "@/sims/registry";
@@ -43,6 +45,8 @@ render("Simulations", "/sims", <Simulations />);
 render("CurriculumHome", "/curriculum", <CurriculumHome />);
 render("CurriculumHome[unit]", "/curriculum?unit=thermodynamics", <CurriculumHome />);
 render("NotFound", "/nope", <NotFound />);
+render("PeriodicTablePage", "/periodic-table", <PeriodicTablePage />);
+render("BondLengthLab[co3]", "/sims/bond-length-lab?preset=co3", <BondLengthLab presetId="co3" />);
 
 /* ---- routed pages: params populated exactly like the app ---- */
 const simRoutes = (

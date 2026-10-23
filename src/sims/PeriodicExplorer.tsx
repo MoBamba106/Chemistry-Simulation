@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { ELEMENTS, ElementData, getElement, CATEGORY_COLORS, isMetal } from "@/chem/elements";
 import { fullConfiguration, nobleGasConfiguration, aufbauFill } from "@/chem/electronConfig";
 import { PeriodicTable, PropertyMode, PROPERTY_MODE_LABELS } from "@/components/PeriodicTable";
+import { toPeriodicElement } from "@/chem/periodicTableData";
 import { Badge, Panel, Button, Segmented, Callout } from "@/components/ui";
 import { ControlSection, InfoRow } from "./SimKit";
 import type { SimProps } from "./types";
@@ -30,7 +31,7 @@ export default function PeriodicExplorer({ presetId, embedded }: SimProps) {
   const selected = selectedZ !== null ? getElement(selectedZ) : null;
   const compareEls = compare.map((z) => getElement(z));
 
-  const toggleCompare = (el: ElementData) => {
+  const toggleCompare = (el: Pick<ElementData, "z">) => {
     setCompare((prev) =>
       prev.includes(el.z) ? prev.filter((z) => z !== el.z) : prev.length >= 3 ? [...prev.slice(1), el.z] : [...prev, el.z]
     );
@@ -39,6 +40,7 @@ export default function PeriodicExplorer({ presetId, embedded }: SimProps) {
   const table = (
     <div style={{ overflowX: "auto", padding: "4px 0 10px" }}>
       <PeriodicTable
+        elements={ELEMENTS.map(toPeriodicElement)}
         mode={mode}
         selectedZ={compareMode ? null : selectedZ}
         compareZ={compare}

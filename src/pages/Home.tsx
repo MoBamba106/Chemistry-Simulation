@@ -28,6 +28,7 @@ export default function Home({ onOpenSearch }: { onOpenSearch: () => void }) {
         <div className="home-hero-actions">
           <Link to="/sims" className="btn btn-primary btn-lg">🧪 Explore simulations</Link>
           <Link to="/curriculum" className="btn btn-outline btn-lg">📚 Browse the curriculum</Link>
+          <Link to="/periodic-table" className="btn btn-ghost btn-lg">⚛️ Periodic table</Link>
           <button className="btn btn-ghost btn-lg" onClick={onOpenSearch}>🔍 Search everything</button>
         </div>
         <div className="home-stats">

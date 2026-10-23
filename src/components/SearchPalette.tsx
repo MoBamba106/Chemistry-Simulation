@@ -1,7 +1,7 @@
 /**
  * SearchPalette — global ⌘K search overlay.
- * Searches everything (sims, units, topics, lessons, concepts) through the
- * shared search engine and navigates on selection. Keyboard-first: arrows,
+ * Searches everything (sims, reference pages, units, topics, lessons, concepts)
+ * through the shared search engine and navigates on selection. Keyboard-first: arrows,
  * Enter, Escape.
  */
 import * as React from "react";
@@ -27,6 +27,8 @@ export function resultHref(r: ScoredResult): string {
     }
     case "concept":
       return `/concept/${r.id}`;
+    case "page":
+      return `/${r.id}`;
   }
 }
 
@@ -36,6 +38,7 @@ const KIND_ICON: Record<string, string> = {
   topic: "🗂",
   lesson: "📖",
   concept: "💡",
+  page: "⚛️",
 };
 
 export default function SearchPalette({
@@ -122,7 +125,7 @@ export default function SearchPalette({
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search simulations, lessons, concepts…"
+            placeholder="Search simulations, pages, lessons, concepts…"
             aria-label="Search query"
             autoComplete="off"
             spellCheck={false}
@@ -136,10 +139,11 @@ export default function SearchPalette({
           {query.trim().length === 0 && (
             <div className="muted" style={{ padding: "22px 14px", fontSize: 13 }}>
               Type to search across <b style={{ color: "var(--text-1)" }}>simulations</b>,{" "}
+              <b style={{ color: "var(--text-1)" }}>reference pages</b>,{" "}
               <b style={{ color: "var(--text-1)" }}>lessons</b>,{" "}
               <b style={{ color: "var(--text-1)" }}>topics</b> and{" "}
               <b style={{ color: "var(--text-1)" }}>concept definitions</b>. Try “VSEPR”,
-              “hydrogen bond”, “titration”, “polar”.
+              “periodic table”, “bond length”, “titration”.
             </div>
           )}
           {query.trim().length > 0 && results.length === 0 && (

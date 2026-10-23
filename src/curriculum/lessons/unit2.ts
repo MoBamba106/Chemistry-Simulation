@@ -107,7 +107,7 @@ export const unit2: Record<string, Lesson> = {
       "Use resonance to explain fractional bonds (equal lengths between single and double)",
     ],
     keyTerms: ["bond-length", "bond-energy", "resonance", "covalent-bond"],
-    relatedSims: ["bond-polarity", "lewis-studio"],
+    relatedSims: ["bond-polarity", "bond-length-lab", "lewis-studio"],
     blocks: [
       {
         t: "p",
@@ -126,6 +126,7 @@ export const unit2: Record<string, Lesson> = {
         t: "p",
         text: "[[resonance|Resonance]] splits the difference: in carbonate (CO₃²⁻), each C–O bond is order 1⅓, and all three are identical in length — between a single and a double. X-ray data confirm what Lewis structures can only average.",
       },
+      { t: "sim", sim: "bond-length-lab", preset: "c2h4", caption: "Start with ethene: select C=C and C–H to compare their lengths, then add acetylene or carbonate. Drag the internuclear-distance control and watch the energy curve move through its minimum." },
       { t: "sim", sim: "lewis-studio", preset: "co3", caption: "Flip through carbonate's resonance forms — then remember the real molecule has three identical 1⅓ bonds." },
       {
         t: "exam",

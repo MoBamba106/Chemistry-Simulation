@@ -304,7 +304,7 @@ export const CONCEPTS: Concept[] = [
     id: "resonance", term: "Resonance", aliases: ["resonance hybrid", "delocalization"],
     short: "When one Lewis diagram can't capture the electron distribution, multiple valid structures (same atoms, different electron placements) represent one real molecule — the resonance hybrid, with delocalized electrons and fractional bond orders.",
     detail: "The molecule never 'flips' between forms. In carbonate, all three C–O bonds are identical (order 1⅓) and the −2 charge is smeared over all three oxygens. Resonance stabilizes — delocalization lowers energy.",
-    sims: ["lewis-studio"], lessons: ["2.6"], molecule: "co3", related: ["formal-charge", "delocalization"],
+    sims: ["lewis-studio", "bond-length-lab"], lessons: ["2.6"], molecule: "co3", related: ["formal-charge", "delocalization", "bond-length"],
   },
   {
     id: "delocalization", term: "Delocalized electrons",
@@ -315,17 +315,17 @@ export const CONCEPTS: Concept[] = [
     id: "bond-energy", term: "Bond energy", aliases: ["bond enthalpy"],
     short: "Energy required to break one mole of bonds in gas phase (always endothermic). Shorter, higher-order bonds are stronger: C≡C (839) > C=C (614) > C–C (347) kJ/mol.",
     equation: "\\Delta H_{rxn} \\approx \\sum BE_{\\text{broken}} - \\sum BE_{\\text{formed}}",
-    sims: ["bond-polarity"], lessons: ["2.3", "2.4", "6.7"], related: ["bond-length", "potential-energy-curve"],
+    sims: ["bond-polarity", "bond-length-lab"], lessons: ["2.3", "2.4", "6.7"], related: ["bond-length", "potential-energy-curve"],
   },
   {
     id: "bond-length", term: "Bond length",
     short: "The internuclear distance at the potential-energy minimum — where attraction and repulsion balance. Decreases with bond order and with smaller atoms.",
-    sims: ["bond-polarity"], lessons: ["2.2", "2.3"], related: ["potential-energy-curve", "bond-energy"],
+    sims: ["bond-polarity", "bond-length-lab"], lessons: ["2.2", "2.3"], related: ["potential-energy-curve", "bond-energy"],
   },
   {
     id: "potential-energy-curve", term: "Potential energy curve", aliases: ["bonding curve", "pe diagram bonding"],
     short: "PE vs internuclear distance for a bond: at long range PE → 0; attraction pulls it down to a minimum (the bond length; depth = bond energy); at short range nuclear repulsion spikes it up.",
-    sims: ["bond-polarity"], lessons: ["2.2"], related: ["bond-length", "bond-energy"],
+    sims: ["bond-polarity", "bond-length-lab"], lessons: ["2.2"], related: ["bond-length", "bond-energy"],
   },
   {
     id: "vsepr", term: "VSEPR theory", aliases: ["valence shell electron pair repulsion"],
